@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>answer pair review</title>
+<style>
+body{font:16px/1.5 system-ui,sans-serif;max-width:760px;margin:2rem auto;padding:0 1rem;color:#222}
+.q{font-weight:600;margin:.5rem 0 1rem}
+.ans{border:1px solid #ddd;border-radius:8px;padding:.9rem 1rem;margin:.6rem 0;white-space:pre-wrap;min-height:3rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+button{padding:.55rem .9rem;border:1px solid #888;border-radius:6px;background:#fff;cursor:pointer}
+button:hover{background:#f3f3f3}
+.muted{color:#777;font-size:14px}
+</style></head><body>
+<div>
+  <label>Labeler <input id="labeler" placeholder="your name"></label>
+  <input type="file" id="file" accept=".json">
+  <span class="muted">(or serve review/pairs.json beside this page)</span>
+</div>
+<p class="q" id="question"></p>
+<div class="muted" id="progress"></div>
+<div class="ans" id="A"></div>
+<div class="ans" id="B"></div>
+<div class="row">
+  <button data-l="same">1 Same idea</button>
+  <button data-l="related">2 Related</button>
+  <button data-l="distinct">3 Distinct</button>
+  <button data-l="skip">S Skip</button>
+  <button id="export">Export labels</button>
+</div>
+<p class="muted">Same: including both would be redundant. Related: same topic or angle, but each adds something. Distinct: different.</p>
+<script>
+const $ = id => document.getElementById(id);
+let pairs = [], i = 0;
+const who = () => $("labeler").value.trim() || "anon";
+const key = () => "labels:" + who();
+const store = () => JSON.parse(localStorage.getItem(key()) || "{}");
+const save = s => localStorage.setItem(key(), JSON.stringify(s));
+
+$("labeler").value = localStorage.getItem("labeler") || "";
+$("labeler").oninput = e => { localStorage.setItem("labeler", e.target.value); show(); };
+
+function load(d){ $("question").textContent = d.question; pairs = d.items; i = 0; show(); }
+fetch("review/pairs.json").then(r => r.ok ? r.json() : Promise.reject()).then(load).catch(() => {});
+$("file").onchange = async e => load(JSON.parse(await e.target.files[0].text()));
+
+function show(){
+  const L = store();
+  for (let k = i; k < pairs.length; k++) if (!L[pairs[k].pair]) { i = k; break; }
+  const p = pairs[i], open = p && !L[p.pair];
+  $("A").textContent = open ? p.a.text : "";
+  $("B").textContent = open ? p.b.text : "";
+  $("progress").textContent = `${Object.keys(L).length} of ${pairs.length} labeled by ${who()}`
+    + (open ? "" : " · done, export when ready");
+}
+
+function label(l){
+  const p = pairs[i], L = store();
+  if (!p || L[p.pair]) return;
+  if (l !== "skip" && !$("labeler").value.trim()) { $("labeler").focus(); return; }
+  L[p.pair] = {pair: p.pair, a: p.a.id, b: p.b.id, label: l,
+               labeler: $("labeler").value.trim(), ts: new Date().toISOString()};
+  save(L); i++; show();
+}
+document.querySelectorAll("button[data-l]").forEach(b => b.onclick = () => label(b.dataset.l));
+addEventListener("keydown", e => {
+  if (document.activeElement.tagName === "INPUT") return;
+  const m = {"1":"same","2":"related","3":"distinct","s":"skip"}[e.key.toLowerCase()];
+  if (m) label(m);
+});
+
+$("export").onclick = () => {
+  const rows = Object.values(store());
+  const blob = new Blob([rows.map(r => JSON.stringify(r)).join("\n") + "\n"], {type: "application/x-ndjson"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `labels-${who()}.jsonl`;
+  a.click();
+};
+</script>
+</body></html>

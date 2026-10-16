@@ -1,0 +1,102 @@
+{
+  "39fb82bc": {
+    "sim": 0.25,
+    "stratum": "top"
+  },
+  "1f115017": {
+    "sim": 0.2099,
+    "stratum": "top"
+  },
+  "1a7e2828": {
+    "sim": 0.2022,
+    "stratum": "top"
+  },
+  "1c53ecdf": {
+    "sim": 0.2022,
+    "stratum": "top"
+  },
+  "855c142a": {
+    "sim": 0.1923,
+    "stratum": "top"
+  },
+  "14cd7549": {
+    "sim": 0.1818,
+    "stratum": "top"
+  },
+  "15fb8ef2": {
+    "sim": 0.1807,
+    "stratum": "top"
+  },
+  "78edb1d7": {
+    "sim": 0.1789,
+    "stratum": "top"
+  },
+  "10d12e87": {
+    "sim": 0.1757,
+    "stratum": "top"
+  },
+  "12cef793": {
+    "sim": 0.163,
+    "stratum": "top"
+  },
+  "14543e81": {
+    "sim": 0.1587,
+    "stratum": "top"
+  },
+  "d8240fa6": {
+    "sim": 0.1585,
+    "stratum": "top"
+  },
+  "175dcc97": {
+    "sim": 0.1573,
+    "stratum": "top"
+  },
+  "ee2fa3d2": {
+    "sim": 0.1529,
+    "stratum": "top"
+  },
+  "d366f615": {
+    "sim": 0.1529,
+    "stratum": "top"
+  },
+  "75eff3cb": {
+    "sim": 0.0317,
+    "stratum": "random"
+  },
+  "149461c5": {
+    "sim": 0.0455,
+    "stratum": "random"
+  },
+  "ece4fa8f": {
+    "sim": 0.0119,
+    "stratum": "random"
+  },
+  "111ef1c2": {
+    "sim": 0.0471,
+    "stratum": "random"
+  },
+  "1fe1f0c3": {
+    "sim": 0.0685,
+    "stratum": "random"
+  },
+  "264e1bf4": {
+    "sim": 0.0571,
+    "stratum": "random"
+  },
+  "1987ecd8": {
+    "sim": 0.0682,
+    "stratum": "random"
+  },
+  "1d5017fc": {
+    "sim": 0.1364,
+    "stratum": "random"
+  },
+  "dd88e157": {
+    "sim": 0.0588,
+    "stratum": "random"
+  },
+  "fdfa93fa": {
+    "sim": 0.0465,
+    "stratum": "random"
+  }
+}
